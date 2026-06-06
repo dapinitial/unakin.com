@@ -21,6 +21,5 @@ npm run preview  # serve the production build locally
 
 ## Deploy
 
-Pushes to `main` build and deploy to Azure Web App `unakin` via
-`.github/workflows/main_unakin.yml`. The Azure publish profile lives in the
-repo's GitHub Actions secrets (`AZUREAPPSERVICE_PUBLISHPROFILE`).
+DigitalOcean App Platform is connected to this repo and auto-deploys
+`main` on push (build: `npm run build`, output: `dist/`).
