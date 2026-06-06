@@ -1,10 +1,10 @@
 /**
  * <gradient-blob> — fixed full-viewport animated gradient background with a
- * goo-filtered blob that lazily follows the cursor.
+ * blob that lazily follows the cursor.
  *
- * Renders into light DOM (styles in styles.css): the goo effect relies on
- * `filter: url(#goo)` resolving against the document, which is unreliable
- * across a shadow boundary.
+ * Renders into light DOM (styles in styles.css). The blobs are plain radial
+ * gradients moved with transforms — no SVG filters, which rasterize a
+ * viewport-sized region every frame (grainy and slow).
  */
 export class GradientBlob extends HTMLElement {
   #frameId = 0;
@@ -12,16 +12,6 @@ export class GradientBlob extends HTMLElement {
 
   connectedCallback() {
     this.innerHTML = /* html */ `
-      <svg xmlns="http://www.w3.org/2000/svg" class="goo-defs" aria-hidden="true">
-        <defs>
-          <filter id="goo">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
-            <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -8" result="goo" />
-            <feBlend in="SourceGraphic" in2="goo" />
-          </filter>
-        </defs>
-      </svg>
-
       <div class="gradients-container">
         <div class="g1"></div>
         <div class="g2"></div>
