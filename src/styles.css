@@ -58,8 +58,11 @@ main {
 }
 
 h1 {
-  font-size: 3rem;
-  font-weight: 700;
+  font-family: 'Fraunces', serif;
+  font-size: clamp(3rem, 10vw, 7rem);
+  font-weight: 600;
+  font-optical-sizing: auto;
+  line-height: 1.05;
 }
 
 .definition {
