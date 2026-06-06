@@ -1,0 +1,75 @@
+:root {
+  --color-bg1: rgb(8, 10, 15);
+  --color-bg2: rgb(0, 17, 32);
+  --color-accent: #bcc0ff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  width: 100%;
+}
+
+body {
+  background: linear-gradient(40deg, var(--color-bg1), var(--color-bg2));
+  color: #fff;
+  font-family: system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+main {
+  position: relative;
+  z-index: 3;
+}
+
+/* ===== BANNER ===== */
+
+.banner {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  text-align: center;
+}
+
+.kicker {
+  color: var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+h1 {
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+.definition {
+  max-width: 52ch;
+  margin: 1.5rem auto 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+/* extra room so the scroll-driven heart breakup has somewhere to go */
+.scroll-space {
+  height: 100vh;
+}
+
+/* ===== SCRAMBLE TEXT ===== */
+
+scramble-text .scramble-char {
+  color: rgba(0, 0, 0, 0.2);
+  text-shadow: 0 0 5px #ffffff, 0 0 20px #000, 0 0 30px #000;
+}

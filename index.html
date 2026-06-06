@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>unakin™ — atypical · unrelated · not comparable</title>
+    <meta
+      name="description"
+      content="unakin (ˌʌnəˈkɪn): not akin — unrelated, atypical, not comparable. Something unakin is coming soon."
+    />
+    <link rel="canonical" href="https://www.unakin.com/" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#080a0f" />
+
+    <!-- Open Graph / social -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.unakin.com/" />
+    <meta property="og:site_name" content="unakin™" />
+    <meta property="og:title" content="unakin™ — atypical · unrelated · not comparable" />
+    <meta
+      property="og:description"
+      content="unakin (ˌʌnəˈkɪn): not akin — unrelated, atypical, not comparable. Something unakin is coming soon."
+    />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="unakin™ — atypical · unrelated · not comparable" />
+    <meta
+      name="twitter:description"
+      content="unakin (ˌʌnəˈkɪn): not akin — unrelated, atypical, not comparable. Something unakin is coming soon."
+    />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "unakin",
+        "url": "https://www.unakin.com/",
+        "description": "unakin (ˌʌnəˈkɪn): not akin — unrelated, atypical, not comparable. Something unakin is coming soon."
+      }
+    </script>
+
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <!-- 1. Gradient background (bottom layer) -->
+    <gradient-blob></gradient-blob>
+
+    <!-- 2. Heart canvas (middle, fixed) -->
+    <heart-model src="/models/heart/"></heart-model>
+
+    <!-- 3. Foreground content (scrolls over everything) -->
+    <main>
+      <section class="banner">
+        <p class="kicker">unakin™ is soon coming</p>
+        <h1>
+          <scramble-text
+            phrases="unakin™|atypical|not akin to|unrelated|not comparable"
+            delay="4000"
+            >unakin™</scramble-text
+          >
+        </h1>
+        <p class="definition">
+          (ˌʌnəˈkɪn): not akin : unrelated. Usually used in the phrase not
+          unakin to… “They would be spectacular achievements in scientific
+          research, not unakin to [not unlike] the discovery of the Higgs
+          Boson…” Dana Smith.
+        </p>
+      </section>
+      <div class="scroll-space" aria-hidden="true"></div>
+    </main>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
