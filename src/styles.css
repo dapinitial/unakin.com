@@ -312,6 +312,60 @@ wait-list {
   white-space: nowrap;
 }
 
+/* Proton chip + hover/focus tooltip */
+.chip-proton {
+  position: relative;
+  outline: none;
+}
+
+.chip-proton .proton-mark {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.chip-proton .tip {
+  position: absolute;
+  bottom: calc(100% + 0.55rem);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  width: max-content;
+  max-width: 15rem;
+  padding: 0.5rem 0.7rem;
+  border-radius: 0.55rem;
+  background: rgba(18, 16, 36, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 0.72rem;
+  line-height: 1.45;
+  letter-spacing: 0.01em;
+  white-space: normal;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  z-index: 5;
+}
+
+/* little caret */
+.chip-proton .tip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: rgba(18, 16, 36, 0.96);
+}
+
+.chip-proton:hover .tip,
+.chip-proton:focus-visible .tip,
+.chip-proton:focus-within .tip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
 .waitlist-trust svg {
   width: 0.95rem;
   height: 0.95rem;

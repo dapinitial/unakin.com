@@ -12,19 +12,21 @@
  * Proton-encrypted inbox, we store only your email, and nothing on this page
  * talks to a third party.
  */
-// Proton Mail mark — purple-gradient envelope (their brand colour), so the
-// "Encrypted comms" chip visibly anchors to Proton.
+// Proton Mail tile — a stylised purple-gradient app mark (not their exact
+// trademarked logo) so the "Encrypted comms" chip visibly anchors to Proton.
 const PROTON_ICON = /* html */ `
   <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" class="proton-mark">
     <defs>
-      <linearGradient id="wl-proton" x1="3" y1="4" x2="21" y2="20" gradientUnits="userSpaceOnUse">
-        <stop offset="0" stop-color="#C7B8FF"/>
-        <stop offset="1" stop-color="#6D4AFF"/>
+      <linearGradient id="wl-proton" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#8a6eff"/>
+        <stop offset="1" stop-color="#6d4aff"/>
       </linearGradient>
     </defs>
-    <rect x="3" y="5" width="18" height="14" rx="2.5" fill="url(#wl-proton)"/>
-    <path d="m4.5 7.5 7.5 6 7.5-6" fill="none" stroke="#fff" stroke-width="1.5"
-      stroke-linecap="round" stroke-linejoin="round" opacity=".95"/>
+    <rect x="2" y="2" width="20" height="20" rx="5.5" fill="url(#wl-proton)"/>
+    <g fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="6" y="8" width="12" height="8" rx="1.6"/>
+      <path d="M6.6 9l5.4 4 5.4-4"/>
+    </g>
   </svg>`;
 
 const MAIL_ICON = /* html */ `
@@ -73,7 +75,10 @@ export class WaitList extends HTMLElement {
         </div>
         <p class="waitlist-status" role="status" aria-live="polite"></p>
         <p class="waitlist-trust">
-          <span class="chip">${PROTON_ICON}<a href="https://proton.me" target="_blank" rel="noopener noreferrer">Encrypted comms</a></span>
+          <span class="chip chip-proton" tabindex="0">
+            ${PROTON_ICON}<a href="https://proton.me" target="_blank" rel="noopener noreferrer">Encrypted comms</a>
+            <span class="tip" role="tooltip">Secured by Proton Mail — replies reach our encrypted inbox</span>
+          </span>
           <span class="chip">${MAIL_ICON}Email only</span>
           <span class="chip">${NOTRACK_ICON}No tracking</span>
         </p>
