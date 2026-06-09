@@ -9,6 +9,6 @@ packages:
         runtime: 'nodejs:18'
         web: true
         environment:
-          RESEND_API_KEY: ${RESEND_API_KEY}
+          RESEND_API_KEY: "${RESEND_API_KEY}"
         limits:
           timeout: 10000
