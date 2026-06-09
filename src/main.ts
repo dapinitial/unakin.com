@@ -3,6 +3,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 import './components/gradient-blob';
 import './components/scramble-text';
+import './components/wait-list';
 
 // three.js is the heavy dependency — load the heart lazily so the static
 // content paints immediately.

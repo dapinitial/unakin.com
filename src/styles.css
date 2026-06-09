@@ -267,3 +267,138 @@ scramble-text .scramble-char {
   color: rgba(0, 0, 0, 0.2);
   text-shadow: 0 0 5px #ffffff, 0 0 20px #000, 0 0 30px #000;
 }
+
+/* ===== WAITLIST ===== */
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+wait-list {
+  display: block;
+  margin: 2.5rem auto 0;
+  width: 100%;
+  max-width: 30rem;
+}
+
+.waitlist-row {
+  display: flex;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+  padding: 0.35rem 0.35rem 0.35rem 1.1rem;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: border-color 0.2s ease;
+}
+
+.waitlist-row:focus-within {
+  border-color: var(--color-accent);
+}
+
+.waitlist-row input[type='email'] {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.waitlist-row input[type='email']::placeholder {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.waitlist-row button {
+  flex-shrink: 0;
+  border: none;
+  border-radius: 999px;
+  padding: 0.6rem 1.3rem;
+  background: var(--color-accent);
+  color: #0b0d1a;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.waitlist-row button:hover {
+  transform: translateY(-1px);
+}
+
+.waitlist-row button:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.waitlist-status {
+  min-height: 1.2rem;
+  margin: 0.6rem 0 0;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.waitlist-status[data-kind='err'] {
+  color: #ffb4b4;
+}
+
+.waitlist-trust {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem 1rem;
+  margin: 1rem 0 0;
+  font-size: 0.78rem;
+  opacity: 0.7;
+}
+
+.waitlist-trust .chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  white-space: nowrap;
+}
+
+.waitlist-trust svg {
+  width: 0.95rem;
+  height: 0.95rem;
+}
+
+.waitlist-trust a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.waitlist-trust a:hover {
+  color: var(--color-accent);
+}
+
+.waitlist-done {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: center;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.waitlist-done svg {
+  width: 1.1rem;
+  height: 1.1rem;
+  flex-shrink: 0;
+  color: var(--color-accent);
+}
