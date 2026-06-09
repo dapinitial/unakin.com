@@ -60,21 +60,15 @@
       <section class="banner" data-state="prompt">
         <!-- default: invitation to join -->
         <div class="scene scene-prompt">
-          <p class="kicker">unakin™ is soon coming</p>
-          <h1 class="headline">
-            <scramble-text
-              phrases="unakin™|atypical|not akin to|unrelated|not comparable"
-              delay="4000"
-              >unakin™</scramble-text
-            >
-          </h1>
+          <p class="kicker">atypical · unrelated · not comparable</p>
+          <h1 class="headline">unakin™</h1>
           <wait-list endpoint="/unakin3/v1/signup"></wait-list>
         </div>
 
-        <!-- after a successful signup -->
+        <!-- just signed up -->
         <div class="scene scene-done">
           <p class="kicker">you're in</p>
-          <h1 class="headline headline-done">You're on the list</h1>
+          <h1 class="headline">You're on the list</h1>
           <p class="subtext">
             We'll be in touch soon — from <strong>hello@unakin.com</strong>.
           </p>
@@ -82,7 +76,28 @@
             <span aria-hidden="true">←</span>&nbsp;go back
           </button>
         </div>
+
+        <!-- returning visitor who already joined -->
+        <div class="scene scene-member">
+          <p class="kicker">welcome back</p>
+          <h1 class="headline">You're already on the list</h1>
+          <p class="subtext">
+            Sit tight — we'll reach out from <strong>hello@unakin.com</strong>.
+          </p>
+          <button class="ghost-btn" type="button" data-action="forget-me">
+            not you? start over
+          </button>
+        </div>
       </section>
+
+      <!-- Set the member scene before paint so returning visitors never flash
+           the signup form. -->
+      <script>
+        try {
+          var b = document.querySelector('.banner');
+          if (b && localStorage.getItem('unakin:joined')) b.dataset.state = 'member';
+        } catch (e) {}
+      </script>
 
       <!-- definition: revealed on scroll -->
       <section class="lore" aria-label="What unakin means">
