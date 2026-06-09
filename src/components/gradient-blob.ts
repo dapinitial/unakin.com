@@ -23,15 +23,12 @@ uniform vec2 u_res;
 uniform float u_time;
 uniform vec2 u_mouse;
 
-// Palette ported from the original CSS (:root --color1..5 + interactive)
 const vec3 BG1 = vec3(8.0, 10.0, 15.0) / 255.0;
 const vec3 BG2 = vec3(0.0, 17.0, 32.0) / 255.0;
-const vec3 C1 = vec3(18.0, 113.0, 255.0) / 255.0;
-const vec3 C2 = vec3(107.0, 74.0, 255.0) / 255.0;
-const vec3 C3 = vec3(100.0, 100.0, 255.0) / 255.0;
-const vec3 C4 = vec3(50.0, 160.0, 220.0) / 255.0;
-const vec3 C5 = vec3(80.0, 47.0, 122.0) / 255.0;
-const vec3 CI = vec3(140.0, 100.0, 255.0) / 255.0;
+// three distinct hues
+const vec3 A = vec3(18.0, 113.0, 255.0) / 255.0;  // blue
+const vec3 B = vec3(120.0, 70.0, 255.0) / 255.0;  // violet
+const vec3 C = vec3(40.0, 170.0, 200.0) / 255.0;  // teal
 
 const float TAU = 6.28318530718;
 
@@ -48,40 +45,31 @@ void main() {
   vec2 px = gl_FragCoord.xy;
   vec2 uv = px / u_res;
   vec2 c = u_res * 0.5;
-  float R = 0.62 * max(u_res.x, u_res.y);
+  float R = 0.4 * min(u_res.x, u_res.y);
 
-  // ~40deg background gradient between the two base colours
+  // subtle cursor parallax (varied depth per blob)
+  vec2 par = u_mouse - c;
+
+  // three independent drifts — coprime-ish periods so they never sync up
+  vec2 pA = c + vec2(sin(u_time / 13.0 * TAU) * u_res.x * 0.30,
+                     cos(u_time / 17.0 * TAU) * u_res.y * 0.28) + par * 0.04;
+  vec2 pB = c + vec2(sin(u_time / 19.0 * TAU + 2.1) * u_res.x * 0.32,
+                     sin(u_time / 11.0 * TAU) * u_res.y * 0.30) + par * 0.09;
+  vec2 pC = c + vec2(cos(u_time / 23.0 * TAU) * u_res.x * 0.26,
+                     sin(u_time / 15.0 * TAU + 1.0) * u_res.y * 0.27) + par * 0.06;
+
+  // ~40deg dark background gradient — stays visible between the dots
   vec3 col = mix(BG1, BG2, clamp(uv.x * 0.64 + uv.y * 0.77, 0.0, 1.0));
 
-  vec3 g = vec3(0.0);
+  // additive, moderate intensity → coloured dots, not a white wash
+  col += A * glow(px, pA, R) * 0.5;
+  col += B * glow(px, pB, R * 1.1) * 0.5;
+  col += C * glow(px, pC, R * 0.9) * 0.45;
 
-  // g1 — vertical bob, 30s
-  g += C1 * glow(px, c + vec2(0.0, sin(u_time * TAU / 30.0) * u_res.y * 0.45), R) * 0.9;
+  // soft-knee tonemap: overlaps roll off smoothly instead of clipping to white
+  col = vec3(1.0) - exp(-col * 1.15);
 
-  // g2 — orbit (reverse), 20s
-  float a2 = -u_time * TAU / 20.0;
-  g += C2 * glow(px, c + vec2(cos(a2), sin(a2)) * u_res.x * 0.28, R) * 0.9;
-
-  // g3 — wide orbit, 40s, offset start
-  float a3 = u_time * TAU / 40.0 + 3.14159;
-  g += C3 * glow(px, c + vec2(cos(a3), sin(a3)) * u_res.x * 0.34, R) * 0.85;
-
-  // g4 — horizontal drift, 40s, dimmer
-  g += C4 * glow(px, c + vec2(
-        sin(u_time * TAU / 40.0) * u_res.x * 0.45,
-        cos(u_time * TAU / 40.0) * u_res.y * 0.12), R) * 0.6;
-
-  // g5 — big slow orbit, 20s
-  float a5 = u_time * TAU / 20.0;
-  g += C5 * glow(px, c + vec2(cos(a5), sin(a5)) * u_res.x * 0.4, R * 1.4) * 0.9;
-
-  // interactive — follows the (eased) cursor
-  g += CI * glow(px, u_mouse, R * 0.9) * 0.7;
-
-  // Screen blend: luminous where glows overlap, never harsh-clips
-  col = 1.0 - (1.0 - col) * (1.0 - g);
-
-  // Ordered-ish dither to kill banding on the long dark falloffs
+  // dither to kill banding on the dark falloffs
   col += (hash(px + fract(u_time)) - 0.5) / 255.0;
 
   gl_FragColor = vec4(col, 1.0);
