@@ -32,9 +32,11 @@ const vec3 C = vec3(40.0, 170.0, 200.0) / 255.0;  // teal
 
 const float TAU = 6.28318530718;
 
-// Soft radial glow — smoothstep falloff mimics the old 40px blur.
-float glow(vec2 p, vec2 center, float r) {
-  return 1.0 - smoothstep(0.0, 1.0, distance(p, center) / r);
+// Bounded metaball field — neighbouring fields sum into smooth bridges so
+// the blobs fuse (the gooey merge), peaking at 4.0 dead centre.
+float field(vec2 p, vec2 ctr, float r) {
+  float d2 = dot(p - ctr, p - ctr);
+  return r * r / (d2 + r * r * 0.25);
 }
 
 float hash(vec2 p) {
@@ -45,29 +47,37 @@ void main() {
   vec2 px = gl_FragCoord.xy;
   vec2 uv = px / u_res;
   vec2 c = u_res * 0.5;
-  float R = 0.4 * min(u_res.x, u_res.y);
+  float R = 0.52 * min(u_res.x, u_res.y); // big, so they cover the field
 
   // subtle cursor parallax (varied depth per blob)
   vec2 par = u_mouse - c;
 
-  // three independent drifts — coprime-ish periods so they never sync up
-  vec2 pA = c + vec2(sin(u_time / 13.0 * TAU) * u_res.x * 0.30,
-                     cos(u_time / 17.0 * TAU) * u_res.y * 0.28) + par * 0.04;
-  vec2 pB = c + vec2(sin(u_time / 19.0 * TAU + 2.1) * u_res.x * 0.32,
-                     sin(u_time / 11.0 * TAU) * u_res.y * 0.30) + par * 0.09;
-  vec2 pC = c + vec2(cos(u_time / 23.0 * TAU) * u_res.x * 0.26,
-                     sin(u_time / 15.0 * TAU + 1.0) * u_res.y * 0.27) + par * 0.06;
+  // three independent drifts — coprime-ish periods so they never sync up,
+  // wide amplitudes so they flow into and out of each other
+  vec2 pA = c + vec2(sin(u_time / 13.0 * TAU) * u_res.x * 0.33,
+                     cos(u_time / 17.0 * TAU) * u_res.y * 0.31) + par * 0.04;
+  vec2 pB = c + vec2(sin(u_time / 19.0 * TAU + 2.1) * u_res.x * 0.35,
+                     sin(u_time / 11.0 * TAU) * u_res.y * 0.33) + par * 0.09;
+  vec2 pC = c + vec2(cos(u_time / 23.0 * TAU) * u_res.x * 0.31,
+                     sin(u_time / 15.0 * TAU + 1.0) * u_res.y * 0.31) + par * 0.06;
 
-  // ~40deg dark background gradient — stays visible between the dots
+  // ~40deg dark background gradient — shows through the gaps
   vec3 col = mix(BG1, BG2, clamp(uv.x * 0.64 + uv.y * 0.77, 0.0, 1.0));
 
-  // additive, moderate intensity → coloured dots, not a white wash
-  col += A * glow(px, pA, R) * 0.5;
-  col += B * glow(px, pB, R * 1.1) * 0.5;
-  col += C * glow(px, pC, R * 0.9) * 0.45;
+  // sum the three fields; colour is the field-weighted blend, so hues mix
+  // gooily in the bridges where blobs meet
+  float fA = field(px, pA, R);
+  float fB = field(px, pB, R * 1.1);
+  float fC = field(px, pC, R * 0.9);
+  float f = fA + fB + fC;
+  vec3 hue = (A * fA + B * fB + C * fC) / max(f, 1e-4);
 
-  // soft-knee tonemap: overlaps roll off smoothly instead of clipping to white
-  col = vec3(1.0) - exp(-col * 1.15);
+  // threshold the field into a soft gooey surface; bridges form where
+  // fields overlap and push the sum above the lower edge
+  float mask = smoothstep(0.6, 1.6, f);
+
+  // mix toward the saturated hue (never white), keeping a touch of depth
+  col = mix(col, hue * 0.85, mask * 0.85);
 
   // dither to kill banding on the dark falloffs
   col += (hash(px + fract(u_time)) - 0.5) / 255.0;
