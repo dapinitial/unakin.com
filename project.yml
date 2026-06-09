@@ -13,4 +13,4 @@ packages:
         environment:
           RESEND_API_KEY: "${RESEND_API_KEY}"
         limits:
-          timeout: 10000
+          timeout: 25000
