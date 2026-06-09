@@ -47,7 +47,7 @@ void main() {
   vec2 px = gl_FragCoord.xy;
   vec2 uv = px / u_res;
   vec2 c = u_res * 0.5;
-  float R = 0.52 * min(u_res.x, u_res.y); // big, so they cover the field
+  float R = 0.46 * min(u_res.x, u_res.y); // between dots and full goo
 
   // subtle cursor parallax (varied depth per blob)
   vec2 par = u_mouse - c;
@@ -74,10 +74,10 @@ void main() {
 
   // threshold the field into a soft gooey surface; bridges form where
   // fields overlap and push the sum above the lower edge
-  float mask = smoothstep(0.6, 1.6, f);
+  float mask = smoothstep(0.8, 1.85, f);
 
   // mix toward the saturated hue (never white), keeping a touch of depth
-  col = mix(col, hue * 0.85, mask * 0.85);
+  col = mix(col, hue * 0.85, mask * 0.62);
 
   // dither to kill banding on the dark falloffs
   col += (hash(px + fract(u_time)) - 0.5) / 255.0;
