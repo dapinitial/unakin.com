@@ -1,7 +1,9 @@
 # DigitalOcean Functions config for the /api/signup waitlist endpoint.
-# RESEND_API_KEY must be declared here (so the function receives it) AND set
-# as an encrypted env var on the component — the ${...} binds the component
-# value into the function runtime. They must match, with no extra/blank vars.
+# RESEND_API_KEY is declared below and also set as an encrypted env var on the
+# component; DO substitutes the component value into the function at build and
+# runtime. Keep exactly one variable here.
+# NOTE: do not write a dollar-brace token in comments — DO's template engine
+# scans the whole file (comments included) and treats it as a variable.
 packages:
   - name: api
     functions:
